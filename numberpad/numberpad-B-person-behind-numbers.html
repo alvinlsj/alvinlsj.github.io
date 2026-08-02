@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NumberPad — Direction B: The Person Behind the Numbers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,700&family=Karla:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#2b2026;
+    --plum:#4e2c3f;
+    --plum-d:#3a1f2f;
+    --blush:#f6ece8;
+    --chalk:#fdfbf9;
+    --teal:#3f7d78;
+    --teal-d:#2f5f5b;
+    --mute:#7d6d75;
+    --line:#e6d8d2;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Karla',system-ui,sans-serif;color:var(--ink);background:var(--chalk);
+       -webkit-font-smoothing:antialiased}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 clamp(18px,4vw,30px)}
+  h1,h2,h3,.dsp{font-family:'Fraunces',Georgia,serif;font-weight:400;line-height:1.08;letter-spacing:-.015em}
+  a{color:inherit}
+
+  .ribbon{background:var(--plum-d);color:#e8d5dd;font-size:11.5px;letter-spacing:.14em;
+          text-transform:uppercase;padding:9px 0;text-align:center}
+  .ribbon b{color:#f0b8a0;font-weight:600}
+
+  nav{border-bottom:1px solid var(--line);background:var(--chalk);position:sticky;top:0;z-index:30}
+  .navin{display:flex;align-items:center;gap:26px;height:74px}
+  .logo{margin-right:auto;display:flex;align-items:center;gap:11px;
+        font-family:'Fraunces',serif;font-size:22px;font-weight:500;letter-spacing:-.02em}
+  .tiles{width:26px;height:26px;display:grid;grid-template-columns:repeat(3,1fr);
+         grid-template-rows:repeat(3,1fr);gap:2px;flex:none}
+  .tiles i{background:var(--blush);border-radius:2px}
+  .tiles i:nth-child(1),.tiles i:nth-child(5),.tiles i:nth-child(9){background:var(--plum)}
+  .navlinks{display:flex;gap:24px;font-size:14.5px;color:var(--mute)}
+  .navlinks a{text-decoration:none}
+  .navlinks a:hover{color:var(--plum)}
+  .btn{font-family:'Karla',sans-serif;font-size:14.5px;font-weight:600;text-decoration:none;
+       padding:11px 20px;border-radius:999px;display:inline-block;border:1px solid transparent;cursor:pointer}
+  .btn-p{background:var(--plum);color:#fff}
+  .btn-p:hover{background:var(--plum-d)}
+  .btn-o{border-color:var(--plum);color:var(--plum)}
+  .btn-o:hover{background:var(--blush)}
+  .btn:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+
+  /* hero */
+  .hero{padding:clamp(48px,7vw,80px) 0 clamp(40px,6vw,70px)}
+  .heroin{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(30px,5vw,58px);align-items:center}
+  .kicker{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);font-weight:600}
+  .hero h1{font-size:clamp(38px,6vw,66px);margin:18px 0 20px}
+  .hero h1 em{font-style:italic;color:var(--plum)}
+  .hero p{font-size:clamp(16px,1.7vw,18.5px);line-height:1.7;color:var(--mute);max-width:44ch}
+  .hero .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+  .sig{margin-top:26px;font-family:'Fraunces',serif;font-style:italic;font-size:19px;color:var(--plum)}
+  .sig small{display:block;font-family:'Karla',sans-serif;font-style:normal;font-size:12.5px;
+             color:var(--mute);letter-spacing:.06em;margin-top:4px}
+
+  .portrait{position:relative}
+  .portrait .frame{aspect-ratio:4/5;border-radius:200px 200px 14px 14px;background:
+      linear-gradient(160deg,var(--blush),#e9dcd6);border:1px solid var(--line);
+      display:flex;align-items:center;justify-content:center;text-align:center;padding:30px}
+  .portrait .frame span{font-size:12.5px;color:var(--mute);line-height:1.7;letter-spacing:.04em}
+  .portrait .stamp{position:absolute;bottom:-16px;left:-16px;background:var(--teal);color:#fff;
+    border-radius:50%;width:118px;height:118px;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center;font-size:11.5px;line-height:1.4;
+    letter-spacing:.06em;text-transform:uppercase;box-shadow:0 12px 26px -12px rgba(63,125,120,.7)}
+  .portrait .stamp b{font-family:'Fraunces',serif;font-size:23px;text-transform:none;letter-spacing:0;font-weight:500}
+
+  /* industries strip */
+  .strip{background:var(--plum);color:#f3e5ea;padding:20px 0;overflow:hidden;white-space:nowrap}
+  .strip .run{display:inline-block;font-family:'Fraunces',serif;font-size:19px;
+              animation:slide 34s linear infinite}
+  .strip .run span{margin:0 20px;opacity:.85}
+  .strip .run span::after{content:"·";margin-left:20px;opacity:.45}
+  @keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @media (prefers-reduced-motion:reduce){.strip .run{animation:none}}
+
+  section{padding:clamp(52px,7vw,86px) 0}
+  h2{font-size:clamp(28px,4.2vw,44px);margin-bottom:16px}
+  .lede{font-size:16.5px;line-height:1.8;color:var(--mute);max-width:58ch}
+
+  /* story */
+  .story{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(28px,5vw,56px);align-items:start}
+  .story p{font-size:16px;line-height:1.85;color:#4c3d45;margin-bottom:16px}
+  .pull{border-left:2px solid var(--teal);padding-left:20px;margin:26px 0;
+        font-family:'Fraunces',serif;font-size:22px;line-height:1.45;color:var(--plum)}
+
+  /* three values */
+  .vals{background:var(--blush)}
+  .vgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:36px}
+  .v h3{font-size:22px;margin-bottom:10px}
+  .v p{font-size:14.5px;line-height:1.8;color:var(--mute)}
+  .v .ico{width:38px;height:38px;border-radius:10px;background:var(--plum);margin-bottom:16px;
+          display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(2,1fr);
+          gap:3px;padding:8px}
+  .v .ico i{background:var(--blush);border-radius:2px}
+  .v:nth-child(2) .ico{background:var(--teal)}
+  .v:nth-child(3) .ico{background:var(--ink)}
+
+  /* services list */
+  .slist{border-top:1px solid var(--line);margin-top:34px}
+  .srow{border-bottom:1px solid var(--line);padding:24px 0;display:grid;
+        grid-template-columns:40px 1fr 1.3fr;gap:22px;align-items:start}
+  .srow .n{font-family:'Fraunces',serif;font-size:17px;color:var(--teal)}
+  .srow h3{font-size:22px}
+  .srow p{font-size:14.5px;line-height:1.8;color:var(--mute)}
+
+  /* testimonials */
+  .test{background:var(--ink);color:#f4ece f0;color:#f5ecef}
+  .test h2{color:#fff}
+  .test .lede{color:#b9a7af}
+  .tgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:26px;margin-top:38px}
+  .t{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+     border-radius:14px;padding:26px}
+  .t p{font-family:'Fraunces',serif;font-size:18px;line-height:1.55;margin-bottom:16px;color:#f7f1f3}
+  .t .who{font-size:13.5px;font-weight:600}
+  .t .biz{font-size:12.5px;color:#b09aa3;margin-top:2px}
+
+  /* pricing teaser */
+  .fees{display:grid;grid-template-columns:1fr 1fr;gap:clamp(26px,4vw,50px);align-items:center}
+  .feecard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:28px}
+  .feecard .r{display:flex;justify-content:space-between;align-items:baseline;
+              padding:13px 0;border-bottom:1px solid var(--line);font-size:15px}
+  .feecard .r:last-child{border-bottom:none}
+  .feecard .r b{font-family:'Fraunces',serif;font-size:22px;font-weight:500}
+  .feecard .r small{display:block;color:var(--mute);font-size:12.5px;margin-top:2px}
+
+  /* contact */
+  .contact{background:var(--blush)}
+  .cgrid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(26px,4vw,50px)}
+  .field{margin-bottom:16px}
+  .field label{display:block;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;
+               color:var(--mute);margin-bottom:7px}
+  .field input,.field select,.field textarea{width:100%;font:inherit;font-size:15px;
+    padding:12px 14px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--ink)}
+  .field textarea{min-height:96px;resize:vertical}
+  .field input:focus,.field select:focus,.field textarea:focus{outline:2px solid var(--teal);outline-offset:1px}
+  .details{font-size:15px;line-height:2.2}
+  .details b{color:var(--mute);font-weight:500;font-size:12.5px;letter-spacing:.1em;
+             text-transform:uppercase;display:inline-block;width:78px}
+  .details a{color:var(--plum);text-decoration:none;border-bottom:1px solid var(--line)}
+
+  footer{padding:30px 0;font-size:13px;color:var(--mute);display:flex;
+         justify-content:space-between;gap:14px;flex-wrap:wrap}
+
+  @media (max-width:880px){
+    .heroin,.story,.fees,.cgrid{grid-template-columns:1fr}
+    .vgrid,.tgrid{grid-template-columns:1fr}
+    .srow{grid-template-columns:30px 1fr}
+    .srow p{grid-column:2}
+    .navlinks{display:none}
+    .portrait{max-width:340px}
+    .portrait .stamp{width:96px;height:96px;left:auto;right:-10px}
+  }
+</style>
+</head>
+<body>
+
+<div class="ribbon">Design direction <b>B — The Person Behind the Numbers</b> · relationship-led, editorial</div>
+
+<nav>
+  <div class="wrap navin">
+    <div class="logo">
+      <span class="tiles" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+      NumberPad
+    </div>
+    <div class="navlinks">
+      <a href="#about">About</a><a href="#services">Services</a><a href="#fees">Fees</a><a href="#contact">Contact</a>
+    </div>
+    <a class="btn btn-p" href="#contact">Say hello</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap heroin">
+    <div>
+      <span class="kicker">Boutique CPA practice · Brisbane</span>
+      <h1>Your accountant should know your <em>business</em>, not just your numbers.</h1>
+      <p>NumberPad is a small Brisbane practice looking after small business owners since 2016. One accountant who knows your name, your industry and where you are heading next.</p>
+      <div class="cta">
+        <a class="btn btn-p" href="#contact">Book a chat with Amanda</a>
+        <a class="btn btn-o" href="#services">What we do</a>
+      </div>
+      <div class="sig">— Amanda Chong<small>Founder, CPA</small></div>
+    </div>
+    <div class="portrait">
+      <div class="frame"><span>PHOTOGRAPHY PLACEHOLDER<br>Portrait of Amanda — warm, natural light,<br>ideally at a client's business rather than a desk</span></div>
+      <div class="stamp"><b>2016</b>practising<br>since</div>
+    </div>
+  </div>
+</header>
+
+<div class="strip">
+  <div class="run">
+    <span>Restaurants</span><span>Fitness centres</span><span>Medical practices</span><span>Day care agencies</span><span>Logistics</span><span>Sporting equipment retail</span><span>Beauty salons</span><span>Tradies</span><span>Freelancers</span>
+    <span>Restaurants</span><span>Fitness centres</span><span>Medical practices</span><span>Day care agencies</span><span>Logistics</span><span>Sporting equipment retail</span><span>Beauty salons</span><span>Tradies</span><span>Freelancers</span>
+  </div>
+</div>
+
+<section id="about">
+  <div class="wrap story">
+    <div>
+      <span class="kicker">About</span>
+      <h2>Small practice, on purpose.</h2>
+    </div>
+    <div>
+      <p>NumberPad was founded in 2016 to do one thing properly: look after small business owners who want an accountant they can actually reach. Accounting is built on numbers, but the work is really built on knowing the person on the other side of them.</p>
+      <p>We support businesses from the very beginning — the point where you are still deciding whether to be a sole trader or a company — right through the years that follow. The core of it is listening carefully enough to understand what you are actually trying to build.</p>
+      <div class="pull">We meet every client face to face at least once a year. Not to sell anything — to look at how the year went and plan the next one.</div>
+      <p>Those meetings are where the useful conversations happen: whether to lease the van or buy it, how cash flow is tracking, what next year's tax bill looks like, whether the structure you set up three years ago still fits. And if something urgent comes up in between, a quick phone call is free. It always has been.</p>
+    </div>
+  </div>
+</section>
+
+<section class="vals">
+  <div class="wrap">
+    <span class="kicker">How we work</span>
+    <h2>Three commitments</h2>
+    <div class="vgrid">
+      <div class="v">
+        <div class="ico" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        <h3>Fixed fees</h3>
+        <p>You will know the fee before we start. No hidden charges, no surprise invoice at the end of the year when the return lands.</p>
+      </div>
+      <div class="v">
+        <div class="ico" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        <h3>Free quick calls</h3>
+        <p>Short questions are never billed. If you are unsure about something mid-year, ring — that is the whole point of having an accountant.</p>
+      </div>
+      <div class="v">
+        <div class="ico" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        <h3>A yearly sit-down</h3>
+        <p>At least one face-to-face meeting a year to review the business, plan for tax, and talk through anything that has changed.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="wrap">
+    <span class="kicker">Services</span>
+    <h2>What we look after</h2>
+    <p class="lede">From a single individual return through to medium-sized enterprises. If your business does not fit neatly into a package, we will build one around it.</p>
+
+    <div class="slist">
+      <div class="srow"><div class="n">01</div><div><h3>Accounting &amp; tax</h3></div>
+        <p>Income tax returns for any entity, financial statements, capital gains tax, GST advice, and every registration you need — TFN, ABN, GST, PAYGW. Australian tax law shifts every year; keeping up with it is our job, not yours.</p></div>
+      <div class="srow"><div class="n">02</div><div><h3>Bookkeeping</h3></div>
+        <p>BAS and IAS, payroll, reconciliations, accounts payable and receivable. We work in Xero, MYOB and QuickBooks — and we will train you on Xero if you would rather keep it in house. Engage us for a couple of hours a week, a quarter, or a year.</p></div>
+      <div class="srow"><div class="n">03</div><div><h3>Business set-up</h3></div>
+        <p>Sole trader, partnership, family trust or company. Too many owners inherit a structure because it is what a friend did. We explain the trade-offs and get it right on day one, which is far cheaper than fixing it later.</p></div>
+      <div class="srow"><div class="n">04</div><div><h3>Self-managed super</h3></div>
+        <p>Your retirement fund, kept compliant with the SIS Act. To preserve independence the audit goes to a separate Brisbane auditor, and the audit fee is already inside our package price.</p></div>
+      <div class="srow"><div class="n">05</div><div><h3>Tax planning</h3></div>
+        <p>Run in the last quarter of the financial year so you know your estimated position and have an action plan before 30 June — rather than finding out in October.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="test">
+  <div class="wrap">
+    <span class="kicker" style="color:#e0a898">In their words</span>
+    <h2>Grown almost entirely on referrals</h2>
+    <p class="lede">Five of the businesses we look after, in their own words.</p>
+    <div class="tgrid">
+      <div class="t">
+        <p>“She took the time during the busy season to sit down with us and explain the entire process — not just this year's tax, but what to think about for the years after.”</p>
+        <div class="who">Andrea Contin &amp; Valentina Vigni</div><div class="biz">Pilloni Restaurant, West End QLD</div>
+      </div>
+      <div class="t">
+        <p>“Three years with NumberPad. Very professional, very helpful, and the attention to detail has been invaluable to our business.”</p>
+        <div class="who">Dene &amp; Angie Dormer</div><div class="biz">Zephz Australia &amp; 1a Aerobic Shoes, Brisbane</div>
+      </div>
+      <div class="t">
+        <p>“Every meeting we had, I left satisfied that my question had been answered clearly.”</p>
+        <div class="who">Philip Knight</div><div class="biz">Paknightfreight, Brisbane QLD</div>
+      </div>
+      <div class="t">
+        <p>“Amanda introduced me to Xero and trained me on it, and my books have been in good order ever since. A top operator at all levels.”</p>
+        <div class="who">Sulu Tapaeko</div><div class="biz">Little Steps Family Day Care, Brisbane</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="fees">
+  <div class="wrap fees">
+    <div>
+      <span class="kicker">Fees</span>
+      <h2>Fixed, and agreed before we start.</h2>
+      <p class="lede">Bookkeeping runs on published monthly packages. Tax returns are quoted individually, because a sole trader with a logbook and a family trust with three entities are genuinely different jobs — but either way you get the number first.</p>
+      <div class="cta" style="margin-top:24px"><a class="btn btn-p" href="#contact">Ask for a quote</a></div>
+    </div>
+    <div class="feecard">
+      <div class="r"><span>Small<small>Sole traders and freelancers</small></span><b>$150<span style="font-size:13px;color:var(--mute)">/mo</span></b></div>
+      <div class="r"><span>Medium<small>Growing small businesses</small></span><b>$250<span style="font-size:13px;color:var(--mute)">/mo</span></b></div>
+      <div class="r"><span>Large<small>Revenue over $500K</small></span><b>$480<span style="font-size:13px;color:var(--mute)">/mo</span></b></div>
+      <div class="r"><span>X Large<small>Revenue $1M+, first year of software free</small></span><b>$700<span style="font-size:13px;color:var(--mute)">/mo+</span></b></div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap">
+    <span class="kicker">Contact</span>
+    <h2>Tell us about the business.</h2>
+    <p class="lede">The first conversation is free and there is no obligation attached to it. Amanda usually replies the same business day.</p>
+    <div class="cgrid" style="margin-top:36px">
+      <div>
+        <div class="field"><label for="n">Your name</label><input id="n" type="text" placeholder="Jane Nguyen"></div>
+        <div class="field"><label for="e">Email</label><input id="e" type="email" placeholder="jane@business.com.au"></div>
+        <div class="field"><label for="s">What do you need?</label>
+          <select id="s">
+            <option>Individual tax return</option>
+            <option>Sole trader return</option>
+            <option>Company / trust return</option>
+            <option>Bookkeeping</option>
+            <option>Setting up a new business</option>
+            <option>Self-managed super fund</option>
+            <option>Not sure yet</option>
+          </select></div>
+        <div class="field"><label for="m">Anything we should know</label><textarea id="m" placeholder="A sentence or two about the business."></textarea></div>
+        <button class="btn btn-p" type="button">Send enquiry</button>
+      </div>
+      <div class="details">
+        <div><b>Email</b> <a href="mailto:info@numberpad.com.au">info@numberpad.com.au</a></div>
+        <div><b>Phone</b> <a href="tel:0423973211">0423 973 211</a> (Amanda)</div>
+        <div><b>Hours</b> Monday – Friday, 9:00am – 5:00pm</div>
+        <div><b>Postal</b> PO Box 5243, Algester QLD 4115</div>
+        <div><b>Social</b> <a href="https://www.facebook.com/numberpadaccounting/">facebook.com/numberpadaccounting</a></div>
+        <div style="margin-top:22px;font-size:13.5px;line-height:1.8;color:var(--mute)">
+          NumberPad is a CPA Practice and a certified partner across Xero, MYOB and QuickBooks.
+        </div>
+      </div>
+    </div>
+    <footer>
+      <span>© 2026 NumberPad Accounting and Taxation</span>
+      <span>Liability limited by a scheme approved under Professional Standards Legislation</span>
+    </footer>
+  </div>
+</section>
+
+</body>
+</html>

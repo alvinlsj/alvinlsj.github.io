@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NumberPad — Website Concepts</title>
+<meta name="description" content="Three design directions for the NumberPad Accounting and Taxation website.">
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --slate:#0b1220;
+    --ink:#182136;
+    --grey:#5c6b85;
+    --line:#e2e8f2;
+    --wash:#f5f8fc;
+    --blue:#2f6bff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',system-ui,sans-serif;color:var(--ink);background:var(--wash);
+       -webkit-font-smoothing:antialiased;line-height:1.5}
+  .wrap{max-width:960px;margin:0 auto;padding:0 clamp(18px,4vw,28px)}
+  h1,h2,h3{font-family:'Space Grotesk',system-ui,sans-serif;letter-spacing:-.03em;line-height:1.1;font-weight:700}
+  a{color:inherit}
+
+  header{background:var(--slate);color:#fff;padding:clamp(40px,7vw,72px) 0;position:relative;overflow:hidden}
+  header::before{content:"";position:absolute;inset:0;
+    background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),
+                     linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);
+    background-size:42px 42px}
+  header .wrap{position:relative}
+  .brand{display:flex;align-items:center;gap:11px;font-family:'Space Grotesk',sans-serif;
+         font-weight:700;font-size:18px;letter-spacing:-.04em;margin-bottom:26px}
+  .mk{width:26px;height:26px;display:grid;grid-template-columns:repeat(3,1fr);
+      grid-template-rows:repeat(3,1fr);gap:2px;flex:none}
+  .mk i{background:rgba(255,255,255,.22);border-radius:2px}
+  .mk i:nth-child(5){background:var(--blue)}
+  header h1{font-size:clamp(30px,5vw,46px);margin-bottom:16px;max-width:20ch}
+  header p{color:#9fb0cc;font-size:clamp(15px,1.7vw,17.5px);max-width:56ch;line-height:1.7}
+  header .meta{margin-top:26px;display:flex;gap:10px;flex-wrap:wrap}
+  .chip{font-size:12.5px;color:#a9bee6;background:rgba(47,107,255,.15);
+        border:1px solid rgba(47,107,255,.32);border-radius:99px;padding:6px 13px}
+  .chip a{color:#7ba4ff;text-decoration:none}
+
+  main{padding:clamp(36px,6vw,60px) 0 clamp(50px,8vw,84px)}
+  .lab{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--grey);
+       font-weight:600;margin-bottom:18px}
+
+  .cards{display:grid;gap:18px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;
+        display:grid;grid-template-columns:150px 1fr;text-decoration:none;transition:.16s}
+  .card:hover{border-color:var(--blue);transform:translateY(-2px);
+              box-shadow:0 16px 34px -18px rgba(47,107,255,.45)}
+  .card:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+  .swatch{display:grid;grid-template-rows:repeat(4,1fr)}
+  .swatch i{display:block}
+  .body{padding:24px 26px}
+  .body .k{font-family:'Space Grotesk',sans-serif;font-size:12.5px;font-weight:700;
+           letter-spacing:.06em;color:var(--blue)}
+  .body h2{font-size:22px;margin:7px 0 9px}
+  .body p{font-size:14.5px;color:var(--grey);line-height:1.7;max-width:62ch}
+  .tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+  .tag{font-size:12px;color:var(--ink);background:var(--wash);border:1px solid var(--line);
+       border-radius:6px;padding:4px 9px}
+  .go{margin-top:16px;font-size:14px;font-weight:600;color:var(--blue);display:inline-flex;
+      align-items:center;gap:7px}
+  .go span{transition:transform .16s}
+  .card:hover .go span{transform:translateX(4px)}
+
+  .note{margin-top:34px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:24px 26px}
+  .note h3{font-size:16px;margin-bottom:10px}
+  .note ul{list-style:none;display:grid;gap:9px}
+  .note li{font-size:14.5px;color:var(--grey);line-height:1.65;padding-left:18px;position:relative}
+  .note li::before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;
+                   border-radius:50%;background:var(--blue)}
+
+  footer{border-top:1px solid var(--line);padding:26px 0;font-size:13px;color:var(--grey);
+         display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+  @media (max-width:620px){
+    .card{grid-template-columns:1fr}
+    .swatch{grid-template-rows:none;grid-template-columns:repeat(4,1fr);height:12px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="brand">
+      <span class="mk" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+      NumberPad
+    </div>
+    <h1>Three directions for the new website.</h1>
+    <p>Each option is a full homepage concept built with NumberPad's real services, pricing and client testimonials. They are working prototypes, not images — open them, scroll them, and try the interactive pieces.</p>
+    <div class="meta">
+      <span class="chip">Concepts for review</span>
+      <span class="chip"><a href="https://www.numberpad.com.au/" target="_blank" rel="noopener">Compare with the current site ↗</a></span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="lab">Pick a direction</div>
+    <div class="cards">
+
+      <a class="card" href="numberpad-A-no-surprises.html">
+        <div class="swatch" aria-hidden="true">
+          <i style="background:#0e1c38"></i><i style="background:#16294c"></i>
+          <i style="background:#ffc233"></i><i style="background:#f4f7fc"></i>
+        </div>
+        <div class="body">
+          <div class="k">DIRECTION A</div>
+          <h2>No Surprises</h2>
+          <p>Leads with the fixed fee. A receipt-styled price panel sits in the hero, the published bookkeeping tiers get a full section, and a sticky bar keeps "book a free call" on screen throughout. Built to convert visitors who are price-shopping accountants.</p>
+          <div class="tags"><span class="tag">Navy &amp; citrus</span><span class="tag">Conversion-led</span><span class="tag">Pricing forward</span><span class="tag">Sticky call CTA</span></div>
+          <div class="go">Open concept <span>→</span></div>
+        </div>
+      </a>
+
+      <a class="card" href="numberpad-B-person-behind-numbers.html">
+        <div class="swatch" aria-hidden="true">
+          <i style="background:#4e2c3f"></i><i style="background:#f6ece8"></i>
+          <i style="background:#3f7d78"></i><i style="background:#2b2026"></i>
+        </div>
+        <div class="body">
+          <div class="k">DIRECTION B</div>
+          <h2>The Person Behind the Numbers</h2>
+          <p>Leads with Amanda. Warm and editorial, with a portrait in the hero, a scrolling band of the industries served, and the yearly face-to-face meeting as the narrative spine. Four client testimonials carry real weight. Suits a practice grown on referrals.</p>
+          <div class="tags"><span class="tag">Plum &amp; blush</span><span class="tag">Relationship-led</span><span class="tag">Editorial serif</span><span class="tag">Enquiry form</span></div>
+          <div class="go">Open concept <span>→</span></div>
+        </div>
+      </a>
+
+      <a class="card" href="numberpad-C-never-miss-a-deadline.html">
+        <div class="swatch" aria-hidden="true">
+          <i style="background:#0b1220"></i><i style="background:#2f6bff"></i>
+          <i style="background:#10b981"></i><i style="background:#f4f7fb"></i>
+        </div>
+        <div class="body">
+          <div class="k">DIRECTION C</div>
+          <h2>Never Miss a Deadline</h2>
+          <p>Leads with a tool. The countdown widget calculates the next BAS quarters, super guarantee dates and lodgement deadlines from today, colour-coded by urgency. Below it, a nine-tile keypad nav and a working fee finder that returns a real package in two taps.</p>
+          <div class="tags"><span class="tag">Slate &amp; blue</span><span class="tag">Tool-led</span><span class="tag">Live countdown</span><span class="tag">SEO play</span></div>
+          <div class="go">Open concept <span>→</span></div>
+        </div>
+      </a>
+
+    </div>
+
+    <div class="note">
+      <h3>Notes for review</h3>
+      <ul>
+        <li>All copy has been rewritten from the current site — same substance, tightened language.</li>
+        <li>Bookkeeping prices are the real published figures. Tax return fees are shown as "quoted", pending a decision on whether to publish them.</li>
+        <li>Photography is placeholder only. A portrait of Amanda and a handful of client-business shots would lift every direction.</li>
+        <li>Forms and buttons are not wired to a backend — they demonstrate layout and flow.</li>
+        <li>Directions can be mixed: Direction A's pricing confidence with Direction B's warmth is a viable fourth option.</li>
+      </ul>
+    </div>
+
+    <footer>
+      <span>NumberPad Accounting and Taxation — concept review</span>
+      <span>Prototypes for discussion, not final production code</span>
+    </footer>
+  </div>
+</main>
+
+</body>
+</html>

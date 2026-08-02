@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NumberPad — Direction C: Never Miss a Deadline</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --slate:#0b1220;
+    --slate-2:#16223a;
+    --ink:#182136;
+    --grey:#5c6b85;
+    --line:#dfe6f0;
+    --wash:#f4f7fb;
+    --blue:#2f6bff;
+    --blue-d:#1d4fd0;
+    --mint:#10b981;
+    --amber:#f59e0b;
+    --red:#e5484d;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',system-ui,sans-serif;color:var(--ink);background:#fff;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 clamp(18px,4vw,32px)}
+  h1,h2,h3,.dsp{font-family:'Space Grotesk',system-ui,sans-serif;letter-spacing:-.03em;line-height:1.08;font-weight:700}
+  a{color:inherit}
+
+  .ribbon{background:var(--slate);color:#9db0d0;font-size:11.5px;letter-spacing:.13em;
+          text-transform:uppercase;padding:9px 0;text-align:center}
+  .ribbon b{color:#6f9dff;font-weight:600}
+
+  nav{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.9);backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--line)}
+  .navin{display:flex;align-items:center;gap:26px;height:68px}
+  .logo{margin-right:auto;display:flex;align-items:center;gap:10px;
+        font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:19px;letter-spacing:-.04em}
+  .mk{width:26px;height:26px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);gap:2px;flex:none}
+  .mk i{background:var(--line);border-radius:2px}
+  .mk i:nth-child(2),.mk i:nth-child(4),.mk i:nth-child(6),.mk i:nth-child(8){background:var(--slate)}
+  .mk i:nth-child(5){background:var(--blue)}
+  .navlinks{display:flex;gap:24px;font-size:14.5px;color:var(--grey)}
+  .navlinks a{text-decoration:none}
+  .navlinks a:hover{color:var(--blue)}
+  .btn{font-family:'Inter',sans-serif;font-size:14.5px;font-weight:600;text-decoration:none;
+       padding:10px 18px;border-radius:9px;display:inline-block;border:1px solid transparent;cursor:pointer}
+  .btn-p{background:var(--blue);color:#fff}
+  .btn-p:hover{background:var(--blue-d)}
+  .btn-g{border-color:var(--line);color:var(--ink);background:#fff}
+  .btn-g:hover{border-color:var(--grey)}
+  .btn:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+  /* hero */
+  .hero{background:var(--slate);color:#fff;padding:clamp(46px,7vw,74px) 0 clamp(46px,7vw,74px);
+        position:relative;overflow:hidden}
+  .hero::before{content:"";position:absolute;inset:0;
+    background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+                     linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+    background-size:44px 44px}
+  .heroin{position:relative;display:grid;grid-template-columns:1fr .92fr;gap:clamp(28px,5vw,54px);align-items:center}
+  .pill{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;color:#a9bee6;
+        background:rgba(47,107,255,.16);border:1px solid rgba(47,107,255,.35);
+        border-radius:99px;padding:6px 13px}
+  .hero h1{font-size:clamp(34px,5.2vw,56px);margin:20px 0 18px}
+  .hero h1 em{font-style:normal;color:#6f9dff}
+  .hero p{font-size:clamp(15.5px,1.6vw,18px);line-height:1.7;color:#9fb0cc;max-width:46ch}
+  .cta{display:flex;gap:11px;flex-wrap:wrap;margin-top:26px}
+
+  /* countdown widget */
+  .widget{background:#fff;border-radius:14px;padding:22px;box-shadow:0 24px 60px -20px rgba(0,0,0,.7)}
+  .widget .wh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
+  .widget h3{font-size:16px}
+  .widget .today{font-size:11.5px;color:var(--grey)}
+  .widget .hint{font-size:12.5px;color:var(--grey);margin-bottom:14px}
+  .dl{display:flex;align-items:center;gap:12px;padding:11px 0;border-top:1px solid var(--line)}
+  .dl .days{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:19px;
+            min-width:64px;text-align:right;flex:none}
+  .dl .days small{font-size:11px;font-weight:500;color:var(--grey);display:block;margin-top:-2px}
+  .dl .bar{flex:1}
+  .dl .nm{font-size:14px;font-weight:500}
+  .dl .dt{font-size:12px;color:var(--grey);margin-top:1px}
+  .dl .tag{font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+           padding:3px 7px;border-radius:5px;flex:none}
+  .soon{color:var(--red)} .mid{color:var(--amber)} .far{color:var(--mint)}
+  .tag.soon{background:#fdeaea;color:var(--red)}
+  .tag.mid{background:#fdf3e2;color:#a86a06}
+  .tag.far{background:#e6f7f1;color:#0a7a5a}
+  .widget .foot{border-top:1px solid var(--line);padding-top:13px;margin-top:4px;
+                font-size:12.5px;color:var(--grey);line-height:1.6}
+
+  /* keypad nav */
+  .keypad{padding:clamp(44px,6vw,66px) 0 0}
+  .kgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:26px}
+  .kt{background:var(--wash);border:1px solid var(--line);border-radius:12px;padding:20px;
+      text-align:left;cursor:pointer;font:inherit;transition:.16s;display:block;text-decoration:none}
+  .kt:hover{border-color:var(--blue);background:#fff;transform:translateY(-2px);
+            box-shadow:0 10px 24px -14px rgba(47,107,255,.5)}
+  .kt:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+  .kt .n{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;color:var(--blue)}
+  .kt h3{font-size:17px;margin:8px 0 5px}
+  .kt p{font-size:13.5px;color:var(--grey);line-height:1.6}
+
+  section{padding:clamp(50px,7vw,80px) 0}
+  .eyebrow{font-size:11.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--blue);font-weight:600}
+  h2{font-size:clamp(27px,3.8vw,40px);margin:12px 0 14px}
+  .lede{font-size:16px;line-height:1.75;color:var(--grey);max-width:58ch}
+
+  /* finder */
+  .finder{background:var(--wash);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .fbox{background:#fff;border:1px solid var(--line);border-radius:16px;padding:clamp(22px,3.5vw,32px);margin-top:30px}
+  .step{margin-bottom:22px}
+  .step .lab{font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);
+             font-weight:600;margin-bottom:11px}
+  .opts{display:flex;flex-wrap:wrap;gap:9px}
+  .opt{font:inherit;font-size:14px;background:#fff;border:1px solid var(--line);color:var(--ink);
+       border-radius:99px;padding:9px 16px;cursor:pointer;transition:.14s}
+  .opt:hover{border-color:var(--blue)}
+  .opt[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+  .opt:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+  .result{border-top:1px solid var(--line);padding-top:22px;display:grid;
+          grid-template-columns:1fr auto;gap:20px;align-items:center}
+  .result .rl{font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--grey);font-weight:600}
+  .result h3{font-size:23px;margin:7px 0 6px}
+  .result p{font-size:14px;color:var(--grey);line-height:1.65;max-width:52ch}
+  .result .price{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:34px;text-align:right}
+  .result .price small{display:block;font-size:12.5px;font-weight:500;color:var(--grey);
+                       font-family:'Inter',sans-serif;margin-top:2px}
+
+  /* proof */
+  .proof{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:32px}
+  .p{border:1px solid var(--line);border-radius:12px;padding:20px}
+  .p .n{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:26px}
+  .p .l{font-size:13px;color:var(--grey);margin-top:5px;line-height:1.55}
+
+  .quotes{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:30px}
+  .q{background:var(--wash);border-radius:12px;padding:22px;font-size:14.5px;line-height:1.7;color:#31405c}
+  .q .who{margin-top:12px;font-size:13px;font-weight:600;color:var(--ink)}
+  .q .biz{font-size:12.5px;color:var(--grey)}
+
+  .final{background:var(--slate);color:#fff;border-radius:16px;padding:clamp(28px,5vw,48px);
+         display:grid;grid-template-columns:1.15fr .85fr;gap:32px;align-items:center}
+  .final h2{margin-top:0}
+  .final p{color:#9fb0cc;font-size:15.5px;line-height:1.7}
+  .card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);
+        border-radius:12px;padding:20px;font-size:14.5px;line-height:2.1}
+  .card b{color:#8ea3c4;font-weight:500;font-size:12.5px;display:inline-block;width:64px}
+  .card a{color:#6f9dff;text-decoration:none}
+
+  footer{padding:30px 0;font-size:13px;color:var(--grey);display:flex;justify-content:space-between;
+         gap:14px;flex-wrap:wrap;border-top:1px solid var(--line);margin-top:26px}
+
+  @media (max-width:900px){
+    .heroin,.final{grid-template-columns:1fr}
+    .kgrid{grid-template-columns:repeat(2,1fr)}
+    .proof{grid-template-columns:repeat(2,1fr)}
+    .quotes{grid-template-columns:1fr}
+    .result{grid-template-columns:1fr}
+    .result .price{text-align:left}
+    .navlinks{display:none}
+  }
+  @media (max-width:520px){.kgrid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="ribbon">Design direction <b>C — Never Miss a Deadline</b> · tool-led, built for search traffic</div>
+
+<nav>
+  <div class="wrap navin">
+    <div class="logo"><span class="mk" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>NumberPad</div>
+    <div class="navlinks"><a href="#dates">Key dates</a><a href="#finder">Fee finder</a><a href="#services">Services</a><a href="#contact">Contact</a></div>
+    <a class="btn btn-p" href="#contact">Get a quote</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap heroin">
+    <div>
+      <span class="pill">CPA Practice · Brisbane · since 2016</span>
+      <h1>Every ATO date that matters, <em>counted down</em> for you.</h1>
+      <p>NumberPad handles accounting, tax and bookkeeping for Queensland small businesses on a fixed fee. Start with the deadline tracker — it is free, and it is the thing most owners get caught by.</p>
+      <div class="cta">
+        <a class="btn btn-p" href="#finder">Find your fee</a>
+        <a class="btn btn-g" style="background:transparent;color:#fff;border-color:rgba(255,255,255,.25)" href="#contact">Talk to Amanda</a>
+      </div>
+    </div>
+
+    <div class="widget">
+      <div class="wh"><h3>Your next deadlines</h3><span class="today" id="today"></span></div>
+      <p class="hint">Standard ATO dates. Lodging through us usually extends several of them.</p>
+      <div id="deadlines"></div>
+      <div class="foot">Miss a BAS and the ATO can apply a failure-to-lodge penalty per 28-day period. We lodge on your behalf and remind you beforehand.</div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap keypad" id="dates">
+  <span class="eyebrow">Start here</span>
+  <h2 style="max-width:20ch">Nine things people come to this site for</h2>
+  <div class="kgrid">
+    <a class="kt" href="#finder"><div class="n">1</div><h3>What will it cost?</h3><p>Answer two questions, get an indicative fixed fee.</p></a>
+    <a class="kt" href="#dates"><div class="n">2</div><h3>When is my BAS due?</h3><p>Live countdown to every quarterly lodgement date.</p></a>
+    <a class="kt" href="#services"><div class="n">3</div><h3>Company or sole trader?</h3><p>The structure decision, explained without jargon.</p></a>
+    <a class="kt" href="#services"><div class="n">4</div><h3>I'm starting a business</h3><p>ABN, GST, PAYGW and the right structure from day one.</p></a>
+    <a class="kt" href="#services"><div class="n">5</div><h3>My books are a mess</h3><p>Catch-up bookkeeping in Xero, MYOB or QuickBooks.</p></a>
+    <a class="kt" href="#services"><div class="n">6</div><h3>Tax planning before June</h3><p>Know your position with a quarter still left to act.</p></a>
+    <a class="kt" href="#services"><div class="n">7</div><h3>SMSF compliance</h3><p>Audit fee included, independent Brisbane auditor.</p></a>
+    <a class="kt" href="#contact"><div class="n">8</div><h3>Switching accountants</h3><p>We handle the handover with your previous firm.</p></a>
+    <a class="kt" href="#contact"><div class="n">9</div><h3>Just a quick question</h3><p>Short phone calls are free. Always have been.</p></a>
+  </div>
+</div>
+
+<section class="finder" id="finder">
+  <div class="wrap">
+    <span class="eyebrow">Fee finder</span>
+    <h2>Roughly what will this cost me?</h2>
+    <p class="lede">Bookkeeping runs on published monthly packages, so we can show you a real number right now. Tax returns are quoted individually — but always fixed, and always agreed before work starts.</p>
+
+    <div class="fbox">
+      <div class="step">
+        <div class="lab">1 · What is the business?</div>
+        <div class="opts" id="q1">
+          <button class="opt" data-v="sole" aria-pressed="true">Sole trader or freelancer</button>
+          <button class="opt" data-v="growing">Growing small business</button>
+          <button class="opt" data-v="est">Revenue over $500K</button>
+          <button class="opt" data-v="big">Revenue over $1M</button>
+        </div>
+      </div>
+      <div class="step">
+        <div class="lab">2 · How much do you want us handling?</div>
+        <div class="opts" id="q2">
+          <button class="opt" data-v="books" aria-pressed="true">Bookkeeping and BAS</button>
+          <button class="opt" data-v="tax">Tax return only</button>
+          <button class="opt" data-v="all">Everything, year round</button>
+        </div>
+      </div>
+      <div class="result">
+        <div>
+          <div class="rl">Indicative package</div>
+          <h3 id="rName">Small</h3>
+          <p id="rDesc"></p>
+        </div>
+        <div class="price" id="rPrice">$150<small>per month</small></div>
+      </div>
+      <div style="margin-top:22px"><a class="btn btn-p" href="#contact">Get this quoted properly</a></div>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="wrap">
+    <span class="eyebrow">Track record</span>
+    <h2>A boutique practice, not a call centre</h2>
+    <div class="proof">
+      <div class="p"><div class="n">2016</div><div class="l">Founded by Amanda Chong, CPA</div></div>
+      <div class="p"><div class="n">Fixed</div><div class="l">Fees agreed before work starts</div></div>
+      <div class="p"><div class="n">$0</div><div class="l">Charged for quick phone questions</div></div>
+      <div class="p"><div class="n">3</div><div class="l">Platforms supported: Xero, MYOB, QuickBooks</div></div>
+    </div>
+
+    <div class="quotes">
+      <div class="q">Amanda took the time during the busy season to sit down with us and explain the entire process — this year's tax and what to plan for in the years after.
+        <div class="who">Andrea Contin &amp; Valentina Vigni</div><div class="biz">Pilloni Restaurant, West End QLD</div></div>
+      <div class="q">Amanda introduced me to Xero and trained me on it. My books have been in good order ever since. A top operator at all levels.
+        <div class="who">Sulu Tapaeko</div><div class="biz">Little Steps Family Day Care, Brisbane</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="final">
+      <div>
+        <h2>Get a fixed quote, usually the same day.</h2>
+        <p>Tell us a little about the business. The first conversation costs nothing and comes with no obligation attached.</p>
+        <div class="cta">
+          <a class="btn btn-p" href="tel:0423973211">Call 0423 973 211</a>
+          <a class="btn btn-g" style="background:transparent;color:#fff;border-color:rgba(255,255,255,.25)" href="mailto:info@numberpad.com.au">Email us</a>
+        </div>
+      </div>
+      <div class="card">
+        <div><b>Email</b> <a href="mailto:info@numberpad.com.au">info@numberpad.com.au</a></div>
+        <div><b>Phone</b> <a href="tel:0423973211">0423 973 211</a></div>
+        <div><b>Hours</b> Mon–Fri, 9:00am – 5:00pm</div>
+        <div><b>Postal</b> PO Box 5243, Algester QLD 4115</div>
+      </div>
+    </div>
+    <footer>
+      <span>© 2026 NumberPad Accounting and Taxation · CPA Practice</span>
+      <span>Key dates shown are general information, not advice.</span>
+    </footer>
+  </div>
+</section>
+
+<script>
+(function(){
+  /* ---- key dates ---- */
+  var DATES=[
+    {m:7,  d:28, nm:'Q4 BAS (Apr–Jun)',       tag:'BAS'},
+    {m:10, d:28, nm:'Q1 BAS (Jul–Sep)',       tag:'BAS'},
+    {m:10, d:28, nm:'Super guarantee, Q1',    tag:'Super'},
+    {m:10, d:31, nm:'Individual tax return',  tag:'Tax'},
+    {m:1,  d:28, nm:'Q2 BAS (Oct–Dec)',       tag:'BAS'},
+    {m:1,  d:28, nm:'Super guarantee, Q2',    tag:'Super'},
+    {m:4,  d:28, nm:'Q3 BAS (Jan–Mar)',       tag:'BAS'},
+    {m:5,  d:15, nm:'Company &amp; trust returns', tag:'Tax'},
+    {m:6,  d:30, nm:'End of financial year',  tag:'EOFY'}
+  ];
+  var now=new Date(), today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  document.getElementById('today').textContent='Today, '+today.toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'});
+
+  var list=DATES.map(function(x){
+    var y=today.getFullYear(), dt=new Date(y,x.m,x.d);
+    if(dt<today) dt=new Date(y+1,x.m,x.d);
+    return {nm:x.nm, tag:x.tag, dt:dt, days:Math.round((dt-today)/864e5)};
+  }).sort(function(a,b){return a.dt-b.dt;}).slice(0,5);
+
+  document.getElementById('deadlines').innerHTML=list.map(function(x){
+    var cls = x.days<=21? 'soon' : x.days<=75? 'mid' : 'far';
+    return '<div class="dl">'+
+      '<div class="days '+cls+'">'+x.days+'<small>days</small></div>'+
+      '<div class="bar"><div class="nm">'+x.nm+'</div>'+
+      '<div class="dt">'+x.dt.toLocaleDateString('en-AU',{weekday:'short',day:'numeric',month:'long',year:'numeric'})+'</div></div>'+
+      '<span class="tag '+cls+'">'+x.tag+'</span></div>';
+  }).join('');
+
+  /* ---- fee finder ---- */
+  var size='sole', scope='books';
+  var PKG={
+    sole:  {nm:'Small',   p:150, d:'One bank reconciliation, 25 transaction lines a month, payroll for one, quarterly BAS prepared and lodged, quarterly reports and super reminders.'},
+    growing:{nm:'Medium', p:250, d:'Three bank or card reconciliations, 100 transaction lines, payroll for five, quarterly super lodgement, quarterly quality assurance review and EOFY payment summaries.'},
+    est:   {nm:'Large',   p:480, d:'Five reconciliations, unlimited transaction lines, payroll for ten with setup included, monthly IAS and monthly reporting.'},
+    big:   {nm:'X Large', p:700, d:'Weekly bookkeeping, ten reconciliations, payroll for twenty, and your first year of Xero, MYOB or QuickBooks included.'}
+  };
+  function paint(){
+    var k=PKG[size];
+    var nameEl=document.getElementById('rName'), descEl=document.getElementById('rDesc'), priceEl=document.getElementById('rPrice');
+    if(scope==='tax'){
+      nameEl.textContent='Individually quoted';
+      descEl.textContent='Returns are priced per entity because the work genuinely differs — a sole trader with a logbook is not a family trust. You will have the fixed number before anything begins.';
+      priceEl.innerHTML='Fixed<small>quoted before we start</small>';
+      return;
+    }
+    nameEl.textContent=k.nm+(scope==='all'?' + annual return':'');
+    descEl.textContent=k.d+(scope==='all'?' Your annual return and financial statements are quoted separately and added to the same fixed arrangement.':'');
+    priceEl.innerHTML=(size==='big'?'from ':'')+'$'+k.p+'<small>per month'+(scope==='all'?', plus return':'')+'</small>';
+  }
+  function bind(id,fn){
+    var el=document.getElementById(id);
+    el.addEventListener('click',function(e){
+      var b=e.target.closest('.opt'); if(!b) return;
+      [].forEach.call(el.children,function(c){c.setAttribute('aria-pressed',c===b);});
+      fn(b.dataset.v); paint();
+    });
+  }
+  bind('q1',function(v){size=v;});
+  bind('q2',function(v){scope=v;});
+  paint();
+})();
+</script>
+</body>
+</html>
